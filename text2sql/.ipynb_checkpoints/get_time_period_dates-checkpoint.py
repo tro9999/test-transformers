@@ -10,108 +10,100 @@ def get_time_period_dates(current_date):
     # Calculate ISO 8601 date for tomorrow
     tomorrow = current_date + timedelta(days=1)
 
-    """
     # Calculate ISO 8601 date for last night
     last_night = current_date - timedelta(days=1)
 
     # Calculate ISO 8601 date for this morning
     this_morning = current_date
+    
+    # Calculate ISO 8601 date for last week
+    last_monday = today - timedelta(days=today.weekday())
+    last_saturday = last_monday - timedelta(days=5)
+    last_sunday = last_monday - timedelta(days=1)
+    last_week = f'{last_monday.isoformat()} - {last_sunday.isoformat()}'
+
+    # Calculate ISO 8601 date for this week
+    this_monday = today - timedelta(days=today.weekday())
+    this_saturday = this_monday + timedelta(days=5)
+    this_sunday = this_monday + timedelta(days=6)
+    this_week = f'{this_monday.isoformat()} - {this_sunday.isoformat()}'
 
     # Calculate ISO 8601 date for next week
-    next_week = current_date + timedelta(weeks=1)
-
-    # Calculate ISO 8601 date for last week
-    last_week = current_date - timedelta(weeks=1)
+    next_monday = this_monday + timedelta(weeks=1)
+    next_saturday = next_monday + timedelta(days=5)
+    next_sunday = next_monday + timedelta(days=6)
+    next_week = f'{next_monday.isoformat()} - {next_sunday.isoformat()}'
 
     # Calculate ISO 8601 date for this month
-    this_month = date(current_date.year, current_date.month, 1)
-
-    # Calculate ISO 8601 date for next month
-    next_month_year = current_date.year if current_date.month != 12 else current_date.year + 1
-    next_month_month = current_date.month + 1 if current_date.month != 12 else 1
-    next_month = date(next_month_year, next_month_month, 1)
+    first_day_of_month = date(today.year, today.month, 1)
+    last_day_of_month = date(today.year, today.month + 1, 1) - timedelta(days=1)
+    this_month = f'{first_day_of_month.isoformat()} - {last_day_of_month.isoformat()}'
 
     # Calculate ISO 8601 date for last month
-    last_month_year = current_date.year if current_date.month != 1 else current_date.year - 1
-    last_month_month = current_date.month - 1 if current_date.month != 1 else 12
-    last_month = date(last_month_year, last_month_month, 1)
+    first_day_of_last_month = date(today.year, today.month - 1, 1)
+    last_day_of_last_month = date(today.year, today.month, 1) - timedelta(days=1)
+    last_month = f'{first_day_of_last_month.isoformat()} - {last_day_of_last_month.isoformat()}'
+
+    # Calculate ISO 8601 date for next month
+    first_day_of_next_month = date(today.year, today.month + 1, 1)
+    last_day_of_next_month = date(today.year, today.month + 2, 1) - timedelta(days=1)
+    next_month = f'{first_day_of_next_month.isoformat()} - {last_day_of_next_month.isoformat()}'
 
     # Calculate ISO 8601 date for this year
-    this_year = date(current_date.year, 1, 1)
-
-    # Calculate ISO 8601 date for next year
-    next_year = date(current_date.year + 1, 1, 1)
+    first_day_of_year = date(today.year, 1, 1)
+    last_day_of_year = date(today.year, 12, 31)
+    this_year = f'{first_day_of_year.isoformat()} - {last_day_of_year.isoformat()}'
 
     # Calculate ISO 8601 date for last year
-    last_year = date(current_date.year - 1, 1, 1)
+    first_day_of_last_year = date(today.year - 1, 1, 1)
+    last_day_of_last_year = date(today.year - 1, 12, 31)
+    last_year = f'{first_day_of_last_year.isoformat()} - {last_day_of_last_year.isoformat()}'
 
-    # Calculate ISO 8601 date for last weekend
-    last_weekday = (current_date.weekday() + 2) % 7  # Convert Monday (0) to Sunday (6)
-    last_saturday = current_date - timedelta(days=last_weekday)
-    last_sunday = last_saturday - timedelta(days=1)
+    # Calculate ISO 8601 date for next year
+    first_day_of_next_year = date(today.year + 1, 1, 1)
+    last_day_of_next_year = date(today.year + 1, 12, 31)
+    next_year = f'{first_day_of_next_year.isoformat()} - {last_day_of_next_year.isoformat()}'
 
-    # Calculate ISO 8601 date for this weekend
-    this_weekday = (current_date.weekday() + 2) % 7  # Convert Monday (0) to Sunday (6)
-    this_saturday = current_date + timedelta(days=(5 - this_weekday))
-    this_sunday = this_saturday + timedelta(days=1)
-
-    # Calculate ISO 8601 date for next weekend
-    next_weekday = (current_date.weekday() + 2) % 7  # Convert Monday (0) to Sunday (6)
-    next_saturday = current_date + timedelta(days=(12 - next_weekday))
-    next_sunday = next_saturday + timedelta(days=1)
-
-    # Calculate ISO 8601 date for last quarter
-    #print(current_date)
-    """
-   
-    """
-    current_quarter = (current_date.month - 1) // 3 + 1
-    last_quarter_month = ((current_quarter - 2) * 3) % 12
-    last_quarter_year = current_date.year if last_quarter_month >= 1 else current_date.year - 1
-    last_quarter = date(last_quarter_year, last_quarter_month, 1)
-
-
-    #current_quarter = (current_date.month - 1) // 3 + 1
-    #last_quarter_month = (current_quarter - 2) * 3
-    #last_quarter_year = current_date.year if last_quarter_month >= 1 else current_date.year - 1
-    #last_quarter = date(last_quarter_year, last_quarter_month, 1)
-
-    # Calculate ISO 8601 date for this quarter
-    this_quarter_month = (current_quarter - 1) * 3
-    this_quarter = date(current_date.year, this_quarter_month, 1)
-
-    # Calculate ISO 8601 date for next quarter
-    next_quarter_month = (current_quarter + 1) * 3 if current_quarter != 4 else 1
-    next_quarter_year = current_date.year if next_quarter_month <= 12 else current_date.year + 1
-    next_quarter = date(next_quarter_year, next_quarter_month, 1)
-
-    # Calculate ISO 8601 date for last semester
-    last_semester_month = 1 if current_date.month <= 6 else 7
-    last_semester_year = current_date.year if last_semester_month == 7 else current_date.year - 1
-    last_semester = date(last_semester_year, last_semester_month, 1)
-    """ 
     
+
+    # Calculate ISO 8601 date for first quarter
+    first_quarter_start = date(date.today().year, 1, 1)
+    first_quarter_end = date(date.today().year, 3, 31)
+
+    # Calculate ISO 8601 date for second quarter
+    second_quarter_start = date(date.today().year, 4, 1)
+    second_quarter_end = date(date.today().year, 6, 30)
+
+    # Calculate ISO 8601 date for third quarter
+    third_quarter_start = date(date.today().year, 7, 1)
+    third_quarter_end = date(date.today().year, 9, 30)
+
+    # Calculate ISO 8601 date for fourth quarter
+    fourth_quarter_start = date(date.today().year, 10, 1)
+    fourth_quarter_end = date(date.today().year, 12, 31)
+
     return {
         'yesterday': yesterday.isoformat(),
         'today': today.isoformat(),
         'tomorrow': tomorrow.isoformat(),
-        #'last_night': last_night.isoformat(),
-        #'this_morning': this_morning.isoformat(),
-        #'next_week': next_week.isoformat(),
-        #'last_week': last_week.isoformat(),
-        #'this_month': this_month.isoformat(),
-        #'next_month': next_month.isoformat(),
-        #'last_month': last_month.isoformat(),
-        #'this_year': this_year.isoformat(),
-        #'next_year': next_year.isoformat(),
-        #'last_year': last_year.isoformat(),
-        #'last_weekend': f'{last_saturday.isoformat()} - {last_sunday.isoformat()}',
-        #'this_weekend': f'{this_saturday.isoformat()} - {this_sunday.isoformat()}',
-        #'next_weekend': f'{next_saturday.isoformat()} - {next_sunday.isoformat()}',
-        #'last_quarter': last_quarter.isoformat(),
-        #'this_quarter': this_quarter.isoformat(),
-        #'next_quarter': next_quarter.isoformat(),
-        #'last_semester': last_semester.isoformat()
+        'last_night': last_night.isoformat(),
+        'this morning': this_morning.isoformat(),
+        'last week': last_week,
+        'this week': this_week,
+        'next week': next_week,
+        'this month': this_month,
+        'last month': last_month,
+        'next_month': next_month,
+        'next year': next_year,
+        'this year': this_year,
+        'last year': last_year,
+        'last weekend': f'{last_saturday.isoformat()} - {last_sunday.isoformat()}',
+        'this weekend': f'{this_saturday.isoformat()} - {this_sunday.isoformat()}',
+        'next weekend': f'{next_saturday.isoformat()} - {next_sunday.isoformat()}',
+        'first quarter': f'{first_quarter_start.isoformat()} - {first_quarter_end.isoformat()}',
+        'second quarter': f'{second_quarter_start.isoformat()} - {second_quarter_end.isoformat()}',
+        'third quarter': f'{third_quarter_start.isoformat()} - {third_quarter_end.isoformat()}',
+        'fourth quarter': f'{fourth_quarter_start.isoformat()} - {fourth_quarter_end.isoformat()}'
     }
 
 # Example usage:
