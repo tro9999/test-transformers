@@ -33,7 +33,7 @@
         "last night",
         "latest"
       ],
-      "type": "Date",
+      "type": "DateTime",
       "desciption": "The date of the sleep period, representing the day before the sleep period ended"
     },
     {

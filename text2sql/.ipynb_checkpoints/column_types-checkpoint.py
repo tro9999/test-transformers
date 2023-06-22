@@ -126,6 +126,11 @@ class FuzzyString(String):
             return None
         return self.values[idx]
 
+class DateTime(String):
+    def adapt(self, x):
+       
+        return x
+
 
 class Date(Integer):
     def adapt(self, x, context=None,metric='year', *args, **kwargs):

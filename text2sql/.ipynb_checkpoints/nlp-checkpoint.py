@@ -1,5 +1,5 @@
 from .data_utils import data_utils
-from .column_types import get,Number,FuzzyString,Categorical,String
+from .column_types import get,Number,FuzzyString,Categorical,String,DateTime
 from .clauses import Clause
 from .conditionmaps import conditions
 

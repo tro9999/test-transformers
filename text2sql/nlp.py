@@ -1,5 +1,5 @@
 from .data_utils import data_utils
-from .column_types import get,Number,FuzzyString,Categorical,String
+from .column_types import get,Number,FuzzyString,Categorical,String,DateTime
 from .clauses import Clause
 from .conditionmaps import conditions
 
@@ -440,6 +440,38 @@ class Nlp:
         #get sql query by adding each clauses back to back by aggregate type classification and  entity extraction from slot_fill
         #csvData = "data/Cancer Death - Data.csv"
         csvData = "data/oura_sleep.xxx"
+        
+        inputLabels=[
+          {
+            "entity_group": "SCONJ",
+            "score": 0.5785049200057983,
+            "word": "how",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "entity_group": "PRON",
+            "score": 0.9942967295646667,
+            "word": "i",
+            "start": 8,
+            "end": 9
+          },
+          {
+            "entity_group": "VERB",
+            "score": 0.988246500492096,
+            "word": "sleep",
+            "start": 10,
+            "end": 15
+          },
+          {
+            "entity_group": "TIME",
+            "score": 0.9617880582809448,
+            "word": "last night",
+            "start": 16,
+            "end": 26
+          }
+        ]
+
         sf = self.slot_fill(csvData, q)
         
         print("GOT SLOTS ",sf)
