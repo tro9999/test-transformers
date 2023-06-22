@@ -1,0 +1,356 @@
+{
+  "name": "oura sleep summary",
+  "desciption": "This sleep summary data provides insights into your sleep quality for a specific night. It includes details such as the date of the sleep period, total sleep duration, sleep efficiency percentage, sleep score representing overall sleep quality, and the distribution of different sleep stages (REM, light, and deep sleep). You can use this information to assess how well you slept, the amount of restful sleep obtained, and any potential sleep disturbances. Additionally, metrics like heart rate, restlessness, and temperature deviation offer further context. With these details, you can evaluate your sleep patterns and make adjustments to improve your overall sleep health.",
+  "keywords": [
+    "Sleep",
+    "Bedtime",
+    "Wake-up",
+    "Duration",
+    "Deep sleep",
+    "REM sleep",
+    "Light sleep",
+    "Awake time",
+    "Heart rate",
+    "Sleep score",
+    "Efficiency",
+    "Chapter",
+    "Temperature",
+    "Breathing rate",
+    "Sleep stages",
+    "Sleep quality",
+    "Sleep disturbances",
+    "HRV (Heart rate variability)",
+    "Sleep schedule"
+  ],
+  "columns": [
+    {
+      "name": "summary_date",
+      "keywords": [
+        "date",
+        "day",
+        "night",
+        "sleep date",
+        "last night",
+        "latest"
+      ],
+      "type": "Date",
+      "desciption": "The date of the sleep period, representing the day before the sleep period ended"
+    },
+    {
+      "name": "bedtime_start",
+      "keywords": [
+        "sleep start time",
+        "bedtime start",
+        "start time",
+        "when I went to bed",
+        "bedtime"
+      ],
+      "type": "Timestamp",
+      "desciption": "The local time when the sleep period started"
+    },
+    {
+      "name": "bedtime_end",
+      "keywords": [
+        "sleep end time",
+        "bedtime end",
+        "end time",
+        "when I woke up",
+        "wake-up time"
+      ],
+      "type": "Timestamp",
+      "desciption": "The local time when the sleep period ended"
+    },
+    {
+      "name": "duration",
+      "keywords": [
+        "sleep length",
+        "total sleep time",
+        "how long I slept"
+      ],
+      "type": "Integer",
+      "desciption": "The total duration of the sleep period in seconds",
+      "summable": "True"
+    },
+    {
+      "name": "total",
+      "keywords": [
+        "total sleep duration",
+        "overall sleep time",
+        "total time asleep",
+        "total sleep"
+      ],
+      "type": "Integer",
+      "desciption": "The total amount of sleep in seconds registered during the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "awake",
+      "keywords": [
+        "awake time",
+        "time awake",
+        "time spent awake",
+        "wakeful period"
+      ],
+      "type": "Integer",
+      "desciption": "The total amount of awake time in seconds registered during the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "rem",
+      "keywords": [
+        "REM sleep",
+        "rapid eye movement sleep",
+        "active dreaming phase",
+        "dreaming"
+      ],
+      "type": "Integer",
+      "desciption": "The total amount of REM sleep in seconds registered during the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "light",
+      "keywords": [
+        "light sleep",
+        "light restful phase",
+        "light rest"
+      ],
+      "type": "Integer",
+      "desciption": "The total amount of light sleep in seconds registered during the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "deep",
+      "keywords": [
+        "deep sleep",
+        "deep restorative phase",
+        "deep rest"
+      ],
+      "type": "Integer",
+      "desciption": "The total amount of deep sleep in seconds registered during the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "hr_lowest",
+      "keywords": [
+        "lowest heart rate",
+        "minimum pulse rate",
+        "lowest heartbeat",
+        "minimum heart rate"
+      ],
+      "type": "Integer",
+      "desciption": "The lowest heart rate (5-minute sliding average) registered during the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "hr_average",
+      "keywords": [
+        "average heart rate",
+        "mean pulse rate",
+        "typical heartbeat",
+        "mean heart rate"
+      ],
+      "type": "Integer",
+      "desciption": "The average heart rate registered during the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "hr_5min",
+      "keywords": [
+        "heart rate intervals",
+        "heartbeat readings",
+        "heartbeats"
+      ],
+      "type": "String",
+      "desciption": "The average heart rate for each beginning 5 minutes of the sleep period"
+    },
+    {
+      "name": "efficiency",
+      "keywords": [
+        "sleep efficiency percentage",
+        "sleep effectiveness",
+        "how well I slept"
+      ],
+      "type": "Integer",
+      "desciption": "The sleep efficiency percentage, representing the proportion of time spent asleep",
+      "summable": "True"
+    },
+    {
+      "name": "onset_latency",
+      "keywords": [
+        "sleep onset time",
+        "time to fall asleep",
+        "how long it took to fall asleep"
+      ],
+      "type": "Integer",
+      "desciption": "The time taken to fall asleep, detected from bedtime_start to the beginning of the first 5 minutes of persistent sleep",
+      "summable": "True"
+    },
+    {
+      "name": "midpoint_time",
+      "keywords": [
+        "sleep midpoint",
+        "halfway sleep time",
+        "halfway through sleep",
+        "middle of sleep"
+      ],
+      "type": "Integer",
+      "desciption": "The time in seconds from the start of sleep to the midpoint of sleep",
+      "summable": "True"
+    },
+    {
+      "name": "restless",
+      "keywords": [
+        "restlessness percentage",
+        "sleep movement",
+        "tossing and turning"
+      ],
+      "type": "Integer",
+      "desciption": "The percentage of sleep time characterized by restlessness or movement",
+      "summable": "True"
+    },
+    {
+      "name": "temperature_delta",
+      "keywords": [
+        "temperature deviation",
+        "change in body temperature",
+        "temperature difference",
+        "temperature change"
+      ],
+      "type": "Decimal",
+      "desciption": "The deviation of skin temperature from the long-term average",
+      "summable": "True"
+    },
+    {
+      "name": "breath_average",
+      "keywords": [
+        "average respiratory rate",
+        "mean breaths per minute",
+        "average breathing rate",
+        "typical breaths per minute",
+        "how I breathe during sleep"
+      ],
+      "type": "Decimal",
+      "desciption": "The average respiratory rate during sleep",
+      "summable": "True"
+    },
+    {
+      "name": "score",
+      "keywords": [
+        "sleep quality score",
+        "overall sleep rating",
+        "sleep score"
+      ],
+      "type": "Integer",
+      "desciption": "The overall sleep quality score for the sleep period",
+      "summable": "True"
+    },
+    {
+      "name": "score_total",
+      "keywords": [
+        "sleep duration score",
+        "total sleep time rating",
+        "score for sleep duration"
+      ],
+      "type": "Integer",
+      "desciption": "The contribution of total sleep time to the sleep quality score",
+      "summable": "True"
+    },
+    {
+      "name": "score_rem",
+      "keywords": [
+        "REM sleep score",
+        "REM sleep rating",
+        "score for REM sleep"
+      ],
+      "type": "Integer",
+      "desciption": "The contribution of REM sleep time to the sleep quality score",
+      "summable": "True"
+    },
+    {
+      "name": "score_deep",
+      "keywords": [
+        "deep sleep score",
+        "deep sleep rating",
+        "score for deep sleep"
+      ],
+      "type": "Integer",
+      "desciption": "The contribution of deep sleep time to the sleep quality score",
+      "summable": "True"
+    },
+    {
+      "name": "score_efficiency",
+      "keywords": [
+        "sleep efficiency score",
+        "sleep effectiveness rating",
+        "score for sleep efficiency"
+      ],
+      "type": "Integer",
+      "desciption": "The contribution of sleep efficiency to the sleep quality score",
+      "summable": "True"
+    },
+    {
+      "name": "score_latency",
+      "keywords": [
+        "sleep onset latency score",
+        "time to fall asleep rating",
+        "score for falling asleep"
+      ],
+      "type": "Integer",
+      "desciption": "The contribution of sleep onset latency to the sleep quality score",
+      "summable": "True"
+    },
+    {
+      "name": "score_disturbances",
+      "keywords": [
+        "sleep disturbances score",
+        "sleep interruption rating",
+        "score for sleep disruptions"
+      ],
+      "type": "Integer",
+      "desciption": "The contribution of sleep disturbances to the sleep quality score",
+      "summable": "True"
+    },
+    {
+      "name": "score_alignment",
+      "keywords": [
+        "sleep schedule alignment score",
+        "sleep midpoint rating",
+        "score for sleep schedule"
+      ],
+      "type": "Integer",
+      "desciption": "The contribution of circadian alignment to the sleep quality score",
+      "summable": "True"
+    },
+    {
+      "name": "hypnogram_5min",
+      "keywords": [
+        "sleep stage sequence",
+        "sleep pattern per 5 minutes",
+        "sleep stages per time segment"
+      ],
+      "type": "String",
+      "desciption": "The sleep stage sequence represented by characters for each 5-minute segment of the sleep period"
+    },
+    {
+      "name": "rmssd",
+      "keywords": [
+        "average HRV",
+        "heart rate variability",
+        "heart rate variation"
+      ],
+      "type": "Integer",
+      "desciption": "The average heart rate variability (HRV) calculated using the rMSSD method",
+      "summable": "True"
+    },
+    {
+      "name": "rmssd_5min",
+      "keywords": [
+        "HRV per 5 minutes",
+        "HRV intervals per time segment",
+        "HRV readings per segment"
+      ],
+      "type": "String",
+      "desciption": "The average HRV (rMSSD) for each beginning 5 minutes of the sleep period"
+    }
+  ]
+}
