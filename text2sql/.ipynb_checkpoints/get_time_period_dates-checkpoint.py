@@ -16,18 +16,46 @@ def get_time_period_dates(current_date):
     # Calculate ISO 8601 date for this morning
     this_morning = current_date
     
-    # Calculate ISO 8601 date for last week
-    last_monday = today - timedelta(days=today.weekday())
-    last_saturday = last_monday - timedelta(days=5)
-    last_sunday = last_monday - timedelta(days=1)
-    last_week = f'{last_monday.isoformat()} - {last_sunday.isoformat()}'
-
     # Calculate ISO 8601 date for this week
     this_monday = today - timedelta(days=today.weekday())
     this_saturday = this_monday + timedelta(days=5)
     this_sunday = this_monday + timedelta(days=6)
     this_week = f'{this_monday.isoformat()} - {this_sunday.isoformat()}'
+    
+    # Calculate ISO 8601 date for last week
+    #last_monday = today - timedelta(days=today.weekday())
+    #last_saturday = last_monday - timedelta(days=5)
+    #last_sunday = last_monday - timedelta(days=1)
+    #last_week = f'{last_monday.isoformat()} - {last_sunday.isoformat()}'
+    
+    
+    # Find the start date of the current week (Monday)
+    start_of_current_week = current_date - timedelta(days=current_date.weekday())
 
+    # Calculate the start date of the previous week
+    start_of_previous_week = start_of_current_week - timedelta(weeks=1)
+
+    # Calculate the end date of the previous week
+    end_of_previous_week = start_of_previous_week + timedelta(days=6)
+    
+    last_week = f'{start_of_previous_week.isoformat()} - {end_of_previous_week.isoformat()}'
+
+
+    # Find the end date of the current week (Sunday)
+    end_of_current_week = start_of_current_week + timedelta(days=6)
+
+    # Find the start date of the last weekend (Saturday)
+    last_saturday = end_of_current_week - timedelta(days=1)
+
+    # Find the end date of the last weekend (Sunday)
+    last_sunday = end_of_current_week
+
+    # Format the start and end dates of the last weekend in ISO 8601 format
+    #iso_start_date = start_of_last_weekend.isoformat()
+    #iso_end_date = end_of_last_weekend.isoformat()
+
+    
+    
     # Calculate ISO 8601 date for next week
     next_monday = this_monday + timedelta(weeks=1)
     next_saturday = next_monday + timedelta(days=5)
@@ -86,18 +114,23 @@ def get_time_period_dates(current_date):
         'yesterday': yesterday.isoformat(),
         'today': today.isoformat(),
         'tomorrow': tomorrow.isoformat(),
-        'last_night': last_night.isoformat(),
+        'last night': last_night.isoformat(),
+        'previous night': last_night.isoformat(),
         'this morning': this_morning.isoformat(),
         'last week': last_week,
+        'previous week': last_week,
         'this week': this_week,
         'next week': next_week,
         'this month': this_month,
         'last month': last_month,
-        'next_month': next_month,
+        'previous month': last_month,
+        'next month': next_month,
         'next year': next_year,
         'this year': this_year,
         'last year': last_year,
+        'previous year': last_year,
         'last weekend': f'{last_saturday.isoformat()} - {last_sunday.isoformat()}',
+        'previous weekend': f'{last_saturday.isoformat()} - {last_sunday.isoformat()}',
         'this weekend': f'{this_saturday.isoformat()} - {this_sunday.isoformat()}',
         'next weekend': f'{next_saturday.isoformat()} - {next_sunday.isoformat()}',
         'first quarter': f'{first_quarter_start.isoformat()} - {first_quarter_end.isoformat()}',

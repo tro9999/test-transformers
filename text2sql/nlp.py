@@ -2,6 +2,8 @@ from .data_utils import data_utils
 from .column_types import get,Number,FuzzyString,Categorical,String,DateTime
 from .clauses import Clause
 from .conditionmaps import conditions
+from .get_time_period_dates import get_time_period_dates
+from datetime import date
 
 from transformers import TFBertForQuestionAnswering, BertTokenizer,DistilBertTokenizer, TFDistilBertForQuestionAnswering
 import tensorflow as tf
@@ -152,7 +154,7 @@ def qa(docs, query, return_score=False, return_all=False, return_source=False, s
         answer=qa_tokenizer.decode(predict_answer_tokens)
         print("ANSWER ",answer)
         print("ANSWER IDX ",answer_start_index,answer_end_index)
-        answer = answer.replace(' #', '').replace('#', '').replace('[CLS]', '').replace('[SEP]', '')
+        answer = answer.replace(' #', '').replace('#', '').replace('[CLS]', '').replace('[SEP]', '').replace(' - ','-')
         input_kws = set(extract_keywords_from_query(query.lower(), phrases=False))
         answer_kws = set(extract_keywords_from_query(answer.lower(), phrases=False))
         num_input_kws = len(input_kws)
@@ -167,8 +169,8 @@ def qa(docs, query, return_score=False, return_all=False, return_source=False, s
         #answer = qa_tokenizer.convert_tokens_to_string(answer_tokens)
 
         print("Answer:", answer)
-        print("Start Score:", start_probs)
-        print("End Score:", end_probs)
+        #print("Start Score:", start_probs)
+        #print("End Score:", end_probs)
         print("Total Score:", start_probs[start_index] * end_probs[end_index])
         
         
@@ -327,12 +329,17 @@ class Nlp:
             end_idx = start_idx + len(vt) - 1
             print("filling slots %s %s %s",colname, val, score)
             slots.append((colname, coltype, val, score, start_idx, end_idx))
+            #print("SLOTS2 ",slots)
         
+        #print("SLOTS BEFORE SORT ",slots)
         slots.sort(key=lambda x: -x[3])
+        print("SLOTS AFTER SORT ",slots)
+        print("SLOTS AFTER SORT ",slots[0][-3])
         windows = []
         slots_filtered = []
         for s in slots:
-            if s[-2] < 0:
+            #if s[-2] < 0:
+            if s[-2] < 0 or s[-3] < 0.5:
                 continue
             win = s[-2:]
             flag = False
@@ -344,6 +351,7 @@ class Nlp:
                 continue
             windows.append(win)
             slots_filtered.append(s[:-2])
+            
         slots = slots_filtered
         print("SLOTS ",slots)
         #print(mappings)
@@ -435,6 +443,20 @@ class Nlp:
 
     
     
+    def time_period_filter(self,schema_col,time_period):
+        
+        filter=''
+        if time_period.count("-") == 5:
+            parts = time_period.split("-", 3)
+            part1 = '-'.join(parts[:3]).strip()
+            part2 = '-'.join(parts[3:]).strip()
+            filter="{} BETWEEN {} AND {}".format(schema_col['name'],part1,part2)
+        else:
+            filter="{} = {}".format(schema_col['name'],time_period)
+        
+        return filter
+        
+        
     def get_sql_query(self, q):
         #df = self.data_dir
         #get sql query by adding each clauses back to back by aggregate type classification and  entity extraction from slot_fill
@@ -463,14 +485,44 @@ class Nlp:
             "start": 10,
             "end": 15
           },
-          {
-            "entity_group": "TIME",
-            "score": 0.9617880582809448,
-            "word": "last night",
-            "start": 16,
-            "end": 26
-          }
+#          {
+#            "entity_group": "TIME",
+#            "score": 0.9617880582809448,
+#            "word": "last night",
+#            "start": 16,
+#            "end": 26
+#          },
+            {
+    "entity_group": "DATE",
+    "score": 0.9812600612640381,
+    "word": "last week",
+    "start": 16,
+    "end": 25
+  }
         ]
+        #how did i sleep last night?
+        #012345678901234567890123456
+        #0         1         2
+        
+        
+        current_date = date.today()
+        possible_timeperiods= get_time_period_dates(current_date)
+        print(possible_timeperiods)
+        #for term, iso_date in result.items():
+        #    print(f'{term}: {iso_date}')
+        timePeriod=""
+        for item in inputLabels:
+            if item["entity_group"] == "TIME" or item["entity_group"] == "DATE":
+                #timePeriod=possible_timeperiods[item["word"]]
+                timePeriod=item["word"]
+                q=q.replace(timePeriod,"")
+                #item["word"] = "replacement word"
+
+                #original_string = "Hello, World!"
+                #new_string = original_string.replace("World", "Python")
+
+                #print(new_string)
+        #print(array)
 
         sf = self.slot_fill(csvData, q)
         
@@ -500,7 +552,9 @@ class Nlp:
             unknown_slots='*'
         question=question.format(unknown_slots,schema["name"].lower())
         print("QUESTION2 ",question)
+        print("SCHEMA 0 ",schema['columns'][0])
         
+        sql=question
         sub_clause=''' WHERE {} = '{}' '''
         for i,s in enumerate(sf):
             condflag=False
@@ -514,13 +568,17 @@ class Nlp:
             if condflag:
                 subq=subq.replace('=','')
                 subq=subq.replace("'","")
-        
-
-           
-
-            
             
             question+=subq   #repeatedly concatenates the incoming entities in sql syntax         
     
-        
-        return question
+    
+        #message = "My name is {} and I'm {} years old.".format(name, age)
+        #print(message)
+        print("QUESTION3 ",question)
+
+        if sql != question:
+            sql=question.strip()+" AND "+self.time_period_filter(schema['columns'][0],possible_timeperiods[timePeriod])
+        else:
+            sql+=" WHERE "+self.time_period_filter(schema['columns'][0],possible_timeperiods[timePeriod])
+            
+        return sql
