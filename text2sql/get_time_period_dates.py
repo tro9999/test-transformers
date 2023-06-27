@@ -110,7 +110,7 @@ def get_time_period_dates(current_date):
     fourth_quarter_start = date(date.today().year, 10, 1)
     fourth_quarter_end = date(date.today().year, 12, 31)
 
-    return {
+    dates = {
         'yesterday': yesterday.isoformat(),
         'today': today.isoformat(),
         'tomorrow': tomorrow.isoformat(),
@@ -138,6 +138,16 @@ def get_time_period_dates(current_date):
         'third quarter': f'{third_quarter_start.isoformat()} - {third_quarter_end.isoformat()}',
         'fourth quarter': f'{fourth_quarter_start.isoformat()} - {fourth_quarter_end.isoformat()}'
     }
+    
+    #current_date- datetime.timedelta(days=7)
+    for i in range(1, 8):
+        weekday=current_date- timedelta(days=i)
+        dates['last '+weekday.strftime("%A").lower()]=weekday.isoformat()
+        dates['previous '+weekday.strftime("%A").lower()]=weekday.isoformat()
+        
+    #current_date.strftime("%A").lower()
+
+    return dates
 
 # Example usage:
 #current_date = date(2023, 6, 22)  # Replace with your desired current date

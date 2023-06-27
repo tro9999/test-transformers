@@ -443,16 +443,21 @@ class Nlp:
 
     
     
-    def time_period_filter(self,schema_col,time_period):
+    def time_period_filter(self,schema_col,possible_periods,time_period):
         
+        currentPeriod="LATEST"
+        
+        if time_period in possible_periods:
+            currentPeriod=possible_periods[time_period]
+            
         filter=''
-        if time_period.count("-") == 5:
-            parts = time_period.split("-", 3)
+        if currentPeriod.count("-") == 5:
+            parts = currentPeriod.split("-", 3)
             part1 = '-'.join(parts[:3]).strip()
             part2 = '-'.join(parts[3:]).strip()
             filter="{} BETWEEN {} AND {}".format(schema_col['name'],part1,part2)
         else:
-            filter="{} = {}".format(schema_col['name'],time_period)
+            filter="{} = {}".format(schema_col['name'],currentPeriod)
         
         return filter
         
@@ -495,7 +500,7 @@ class Nlp:
             {
     "entity_group": "DATE",
     "score": 0.9812600612640381,
-    "word": "last week",
+    "word": "last friday",
     "start": 16,
     "end": 25
   }
@@ -577,8 +582,8 @@ class Nlp:
         print("QUESTION3 ",question)
 
         if sql != question:
-            sql=question.strip()+" AND "+self.time_period_filter(schema['columns'][0],possible_timeperiods[timePeriod])
+            sql=question.strip()+" AND "+self.time_period_filter(schema['columns'][0],possible_timeperiods,timePeriod)
         else:
-            sql+=" WHERE "+self.time_period_filter(schema['columns'][0],possible_timeperiods[timePeriod])
+            sql+=" WHERE "+self.time_period_filter(schema['columns'][0],possible_timeperiods,timePeriod)
             
         return sql
