@@ -68,6 +68,8 @@ class Clause:
         emb = self.get_embeddings(q)
         #self.clause = argmax(model.predict(emb))
         
+        print(emb)
+        print(model.predict(emb))
         
         if distinct:
             self.clause = self.distinct_types[argmax(model.predict(emb))]
